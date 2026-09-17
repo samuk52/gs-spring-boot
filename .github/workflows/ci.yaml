@@ -1,0 +1,72 @@
+name: Java CI
+
+on:
+    push:
+      branches: 
+        - main
+    pull_request:
+      branches:
+        - main
+
+jobs:
+  compile:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      
+      - name: Build
+        working-directory: ./complete
+        run: ./mvnw clean compile
+  
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: 
+      - compile
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      
+      - name: Testing
+        working-directory: ./complete
+        run: ./mvnw clean test
+  
+  package:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: 
+      - test
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      
+      - name: Testing
+        working-directory: ./complete
+        run: ./mvnw clean package -DskipTests
+
+  
+    
+    
+        
+
+
